@@ -17,10 +17,13 @@ const els = {
   toast: document.getElementById("toast"),
   sharedBanner: document.getElementById("sharedBanner"),
   editBtn: document.getElementById("editSharedBtn"),
+  previewLoading: document.getElementById("previewLoading"),
 };
 
 let mode = "html";
 let renderTimer = null;
+let previewLoadingTimer = null;
+let previewSlowTimer = null;
 
 function encodeState(code, m) {
   const json = JSON.stringify({ c: code, m });
@@ -51,11 +54,28 @@ function setMode(newMode) {
   render();
 }
 
+function hidePreviewLoading() {
+  clearTimeout(previewSlowTimer);
+  els.previewLoading.classList.remove("show");
+}
+
+function showPreviewLoading() {
+  els.previewLoading.textContent = "미리보기를 불러오는 중...";
+  els.previewLoading.classList.add("show");
+  clearTimeout(previewSlowTimer);
+  previewSlowTimer = setTimeout(() => {
+    els.previewLoading.textContent =
+      "아직 로딩 중이에요. 코드 안의 외부 스크립트/이미지 주소가 사내망에서 차단되었을 수 있어요.";
+  }, 3000);
+}
+
 function render() {
   const code = els.editor.value;
   if (mode === "html") {
+    showPreviewLoading();
     els.previewFrame.srcdoc = code;
   } else {
+    hidePreviewLoading();
     const rawHtml = window.marked.parse(code);
     const clean = window.DOMPurify.sanitize(rawHtml);
     els.markdownPreview.innerHTML = clean;
@@ -118,6 +138,7 @@ function loadDraft() {
   return false;
 }
 
+els.previewFrame.addEventListener("load", hidePreviewLoading);
 els.modeHtmlBtn.addEventListener("click", () => setMode("html"));
 els.modeMdBtn.addEventListener("click", () => setMode("markdown"));
 els.editor.addEventListener("input", scheduleRender);
