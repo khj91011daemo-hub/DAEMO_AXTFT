@@ -14,8 +14,10 @@ const els = {
   modeMdBtn: document.getElementById("modeMarkdown"),
   shareBtn: document.getElementById("shareBtn"),
   clearBtn: document.getElementById("clearBtn"),
+  downloadBtn: document.getElementById("downloadBtn"),
   toast: document.getElementById("toast"),
   sharedBanner: document.getElementById("sharedBanner"),
+  sharedBannerText: document.getElementById("sharedBannerText"),
   editBtn: document.getElementById("editSharedBtn"),
   previewLoading: document.getElementById("previewLoading"),
   panes: document.getElementById("panes"),
@@ -28,9 +30,10 @@ let mode = "html";
 let renderTimer = null;
 let previewLoadingTimer = null;
 let previewSlowTimer = null;
+let lastShareTitle = "";
 
-function encodeState(code, m) {
-  const json = JSON.stringify({ c: code, m });
+function encodeState(code, m, title) {
+  const json = JSON.stringify(title ? { c: code, m, t: title } : { c: code, m });
   const bytes = new TextEncoder().encode(json);
   let binary = "";
   bytes.forEach((b) => (binary += String.fromCharCode(b)));
@@ -103,14 +106,47 @@ function showToast(msg) {
 }
 
 async function copyShareLink() {
-  const encoded = encodeState(els.editor.value, mode);
+  const title = window.prompt(
+    "공유할 제목을 입력하세요 (SharePoint/팀즈에 붙여넣기 좋게 링크 앞에 붙습니다. 비워두려면 그대로 확인)",
+    lastShareTitle
+  );
+  if (title === null) return; // user cancelled
+
+  lastShareTitle = title.trim();
+  const encoded = encodeState(els.editor.value, mode, lastShareTitle);
   const url = `${location.origin}${location.pathname}#s=${encoded}`;
+  const text = lastShareTitle ? `[${lastShareTitle}] ${url}` : url;
+
   try {
-    await navigator.clipboard.writeText(url);
-    showToast("공유 링크가 복사되었습니다. 팀즈 채널에 붙여넣으세요.");
+    await navigator.clipboard.writeText(text);
+    showToast("공유 링크가 복사되었습니다. 팀즈 채널이나 SharePoint에 붙여넣으세요.");
   } catch (e) {
-    window.prompt("아래 링크를 복사하세요:", url);
+    window.prompt("아래 내용을 복사하세요:", text);
   }
+}
+
+function slugifyForFilename(title) {
+  const trimmed = (title || "").trim();
+  if (!trimmed) return "code-preview";
+  return trimmed.replace(/[\\/:*?"<>|]/g, "").replace(/\s+/g, "_").slice(0, 60);
+}
+
+function downloadAsFile() {
+  const code = els.editor.value;
+  const ext = mode === "markdown" ? "md" : "html";
+  const mimeType = mode === "markdown" ? "text/markdown" : "text/html";
+  const filename = `${slugifyForFilename(lastShareTitle)}.${ext}`;
+
+  const blob = new Blob([code], { type: `${mimeType};charset=utf-8` });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  showToast(`${filename} 다운로드되었습니다.`);
 }
 
 function loadFromHash() {
@@ -119,6 +155,10 @@ function loadFromHash() {
     const state = decodeState(hash.slice(3));
     if (state) {
       els.editor.value = state.c;
+      if (state.t) lastShareTitle = state.t;
+      els.sharedBannerText.textContent = state.t
+        ? `공유된 미리보기입니다 (${state.t}). 자유롭게 수정할 수 있어요.`
+        : "공유된 미리보기입니다. 자유롭게 수정할 수 있어요.";
       setMode(state.m === "markdown" ? "markdown" : "html");
       els.sharedBanner.classList.add("show");
       return true;
@@ -180,6 +220,7 @@ els.modeHtmlBtn.addEventListener("click", () => setMode("html"));
 els.modeMdBtn.addEventListener("click", () => setMode("markdown"));
 els.editor.addEventListener("input", scheduleRender);
 els.shareBtn.addEventListener("click", copyShareLink);
+els.downloadBtn.addEventListener("click", downloadAsFile);
 els.clearBtn.addEventListener("click", () => {
   els.editor.value = "";
   render();
