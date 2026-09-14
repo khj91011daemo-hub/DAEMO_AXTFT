@@ -5,9 +5,9 @@
   "id": "05547c26-a5f4-45d8-aa4c-3536164e32c0",
   "developer": {
     "name": "Daemo Engineering TFT",
-    "websiteUrl": "https://GITHUB_USERNAME.github.io/REPO_NAME/",
-    "privacyUrl": "https://GITHUB_USERNAME.github.io/REPO_NAME/",
-    "termsOfUseUrl": "https://GITHUB_USERNAME.github.io/REPO_NAME/"
+    "websiteUrl": "https://khj91011daemo-hub.github.io/DAEMO_AXTFT/",
+    "privacyUrl": "https://khj91011daemo-hub.github.io/DAEMO_AXTFT/",
+    "termsOfUseUrl": "https://khj91011daemo-hub.github.io/DAEMO_AXTFT/"
   },
   "name": {
     "short": "코드 미리보기",
@@ -26,18 +26,18 @@
     {
       "entityId": "codePreview",
       "name": "코드 미리보기",
-      "contentUrl": "https://GITHUB_USERNAME.github.io/REPO_NAME/index.html",
-      "websiteUrl": "https://GITHUB_USERNAME.github.io/REPO_NAME/index.html",
+      "contentUrl": "https://khj91011daemo-hub.github.io/DAEMO_AXTFT/index.html",
+      "websiteUrl": "https://khj91011daemo-hub.github.io/DAEMO_AXTFT/index.html",
       "scopes": ["personal"]
     }
   ],
   "configurableTabs": [
     {
-      "configurationUrl": "https://GITHUB_USERNAME.github.io/REPO_NAME/config.html",
+      "configurationUrl": "https://khj91011daemo-hub.github.io/DAEMO_AXTFT/config.html",
       "canUpdateConfiguration": true,
       "scopes": ["team", "groupChat"]
     }
   ],
   "permissions": [],
-  "validDomains": ["GITHUB_USERNAME.github.io"]
+  "validDomains": ["khj91011daemo-hub.github.io"]
 }
