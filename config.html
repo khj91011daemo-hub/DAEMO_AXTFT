@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>코드 미리보기 설정</title>
+  <script src="https://res.cdn.office.net/teams-js/2.19.0/js/MicrosoftTeams.min.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+      padding: 32px;
+      color: #1b1b1f;
+    }
+    p {
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <h2>코드 미리보기 탭</h2>
+  <p>HTML/Markdown 코드를 붙여넣으면 바로 미리보기가 되는 탭입니다.<br />추가 설정 없이 바로 사용할 수 있습니다.</p>
+  <script>
+    const tabUrl = location.href.replace(/config\.html.*$/, "index.html");
+
+    microsoftTeams.app.initialize().then(() => {
+      microsoftTeams.pages.config.setValidityState(true);
+      microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
+        microsoftTeams.pages.config.setConfig({
+          entityId: "codePreview",
+          contentUrl: tabUrl,
+          websiteUrl: tabUrl,
+          suggestedDisplayName: "코드 미리보기",
+        });
+        saveEvent.notifySuccess();
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.17",
+  "version": "1.0.0",
+  "id": "05547c26-a5f4-45d8-aa4c-3536164e32c0",
+  "developer": {
+    "name": "Daemo Engineering TFT",
+    "websiteUrl": "https://GITHUB_USERNAME.github.io/REPO_NAME/",
+    "privacyUrl": "https://GITHUB_USERNAME.github.io/REPO_NAME/",
+    "termsOfUseUrl": "https://GITHUB_USERNAME.github.io/REPO_NAME/"
+  },
+  "name": {
+    "short": "코드 미리보기",
+    "full": "코드 미리보기 (HTML/Markdown Preview)"
+  },
+  "description": {
+    "short": "HTML/Markdown 코드를 붙여넣으면 바로 미리보기",
+    "full": "TFT 팀원들이 Claude 등으로 작성한 HTML 또는 Markdown 코드를 붙여넣으면 즉시 미리보기를 확인하고, 링크를 만들어 팀즈 채널이나 채팅에 바로 공유할 수 있는 도구입니다."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#5B4CF0",
+  "staticTabs": [
+    {
+      "entityId": "codePreview",
+      "name": "코드 미리보기",
+      "contentUrl": "https://GITHUB_USERNAME.github.io/REPO_NAME/index.html",
+      "websiteUrl": "https://GITHUB_USERNAME.github.io/REPO_NAME/index.html",
+      "scopes": ["personal"]
+    }
+  ],
+  "configurableTabs": [
+    {
+      "configurationUrl": "https://GITHUB_USERNAME.github.io/REPO_NAME/config.html",
+      "canUpdateConfiguration": true,
+      "scopes": ["team", "groupChat"]
+    }
+  ],
+  "permissions": [],
+  "validDomains": ["GITHUB_USERNAME.github.io"]
+}
