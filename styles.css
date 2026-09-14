@@ -41,7 +41,8 @@ html, body {
   height: 100vh;
 }
 
-.toolbar {
+.topbar,
+.actionbar {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -51,10 +52,37 @@ html, body {
   flex-wrap: wrap;
 }
 
-.toolbar .title {
+.topbar .title {
   font-weight: 600;
-  margin-right: auto;
+  margin-right: 18px;
   white-space: nowrap;
+}
+
+.feature-nav {
+  display: flex;
+  gap: 6px;
+}
+
+.feature-btn {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.feature-btn:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.feature-btn.active {
+  background: var(--bg);
+  color: var(--accent);
+  border-color: var(--border);
 }
 
 .mode-toggle {
@@ -106,15 +134,31 @@ button.btn:hover {
 }
 
 .pane {
-  flex: 1 1 50%;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--border);
 }
 
-.pane:last-child {
-  border-right: none;
+#editorPane {
+  flex: 1 1 50%;
+  min-width: 160px;
+}
+
+#previewPane {
+  flex: 1 1 auto;
+  min-width: 160px;
+}
+
+.divider {
+  flex: none;
+  width: 6px;
+  cursor: col-resize;
+  background: var(--border);
+}
+
+.divider:hover,
+.divider.dragging {
+  background: var(--accent);
 }
 
 .pane-header {
@@ -241,8 +285,12 @@ button.btn:hover {
   .panes {
     flex-direction: column;
   }
-  .pane {
-    border-right: none;
+  #editorPane,
+  #previewPane {
+    flex: 1 1 50% !important;
     border-bottom: 1px solid var(--border);
+  }
+  .divider {
+    display: none;
   }
 }

@@ -18,6 +18,10 @@ const els = {
   sharedBanner: document.getElementById("sharedBanner"),
   editBtn: document.getElementById("editSharedBtn"),
   previewLoading: document.getElementById("previewLoading"),
+  panes: document.getElementById("panes"),
+  editorPane: document.getElementById("editorPane"),
+  divider: document.getElementById("divider"),
+  featurePreviewBtn: document.getElementById("featurePreview"),
 };
 
 let mode = "html";
@@ -137,6 +141,39 @@ function loadDraft() {
   }
   return false;
 }
+
+function enableDividerResize() {
+  const MIN_PANE = 160;
+  let dragging = false;
+
+  els.divider.addEventListener("mousedown", (e) => {
+    dragging = true;
+    els.divider.classList.add("dragging");
+    document.body.style.userSelect = "none";
+    e.preventDefault();
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    if (!dragging) return;
+    const rect = els.panes.getBoundingClientRect();
+    const dividerWidth = els.divider.getBoundingClientRect().width;
+    const maxWidth = rect.width - dividerWidth - MIN_PANE;
+    const width = Math.min(maxWidth, Math.max(MIN_PANE, e.clientX - rect.left));
+    els.editorPane.style.flex = `0 0 ${width}px`;
+  });
+
+  window.addEventListener("mouseup", () => {
+    if (!dragging) return;
+    dragging = false;
+    els.divider.classList.remove("dragging");
+    document.body.style.userSelect = "";
+  });
+}
+
+els.featurePreviewBtn.addEventListener("click", () => {
+  els.featurePreviewBtn.classList.add("active");
+});
+enableDividerResize();
 
 els.previewFrame.addEventListener("load", hidePreviewLoading);
 els.modeHtmlBtn.addEventListener("click", () => setMode("html"));

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>코드 미리보기</title>
+  <title>코드공유 편집</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="lib/marked.min.js" defer></script>
   <script src="lib/purify.min.js" defer></script>
@@ -15,8 +15,13 @@
       공유된 미리보기입니다. 자유롭게 수정할 수 있어요.
       <button class="btn" id="editSharedBtn">편집 시작</button>
     </div>
-    <div class="toolbar">
-      <span class="title">코드 미리보기</span>
+    <div class="topbar">
+      <span class="title">코드공유 편집</span>
+      <div class="feature-nav">
+        <button class="feature-btn active" id="featurePreview" type="button">코드미리보기</button>
+      </div>
+    </div>
+    <div class="actionbar">
       <div class="mode-toggle">
         <button id="modeHtml" class="active">HTML</button>
         <button id="modeMarkdown">Markdown</button>
@@ -24,12 +29,13 @@
       <button class="btn" id="clearBtn">지우기</button>
       <button class="btn primary" id="shareBtn">공유 링크 복사</button>
     </div>
-    <div class="panes">
-      <div class="pane">
+    <div class="panes" id="panes">
+      <div class="pane" id="editorPane">
         <div class="pane-header">코드 입력</div>
         <textarea id="editor" spellcheck="false" placeholder="여기에 HTML 또는 Markdown 코드를 붙여넣으세요"></textarea>
       </div>
-      <div class="pane">
+      <div class="divider" id="divider"></div>
+      <div class="pane" id="previewPane">
         <div class="pane-header">미리보기</div>
         <div class="preview-wrap">
           <iframe id="previewFrame" sandbox="allow-scripts" title="preview"></iframe>
